@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "263968626604",
+    "firebase_url": "https://emergensharedb-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "emergensharedb",
+    "storage_bucket": "emergensharedb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263968626604:android:12daa930ee4808d94f8c09",
+        "android_client_info": {
+          "package_name": "com.example.emergenshare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2PvRROIPL48YBeBzkOcf0fpZoLIz2jiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263968626604:android:ed74a75b26d9dbde4f8c09",
+        "android_client_info": {
+          "package_name": "com.example.emergenshare_amb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2PvRROIPL48YBeBzkOcf0fpZoLIz2jiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263968626604:android:0dc73b0173e45f8a4f8c09",
+        "android_client_info": {
+          "package_name": "com.example.fbtest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2PvRROIPL48YBeBzkOcf0fpZoLIz2jiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
