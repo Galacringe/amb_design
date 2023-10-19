@@ -189,11 +189,13 @@ class _Patient_InfoState extends State<Patient_Info>
   }
 
   // DB 전송
-  void _sendDB(car, location, name, ktas, info, blood, tag1, tag2, tag3) async {
+  void _sendDB(
+      car, location, name, ktas, info, blood, tag1, tag2, tag3, age) async {
     firestore.collection('AMB').doc('$car' + '$name').set({
       'CAR': int.parse(car),
       'LOCATION': location,
       'NAME': name,
+      "AGE": age,
       'KTAS': ktas,
       'INFO': info,
       'BLOOD': blood,
@@ -510,8 +512,17 @@ class _Patient_InfoState extends State<Patient_Info>
           child: Text("등록하기!"),
           onPressed: () {
             try {
-              var id = _sendDB(carCode, location, patientName.text, sliderValue,
-                  patientInfo.text, bloodTypeSelected, tags1, tags2, tags3);
+              var id = _sendDB(
+                  carCode,
+                  location,
+                  patientName.text,
+                  sliderValue,
+                  patientInfo.text,
+                  bloodTypeSelected,
+                  tags1,
+                  tags2,
+                  tags3,
+                  patientAge.text);
 
               _showPopDB(context, "등록이 완료되었습니다.", carCode, location);
             } catch (e) {
