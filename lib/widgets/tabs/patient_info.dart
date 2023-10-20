@@ -192,7 +192,7 @@ class _Patient_InfoState extends State<Patient_Info>
   void _sendDB(
       car, location, name, ktas, info, blood, tag1, tag2, tag3, age) async {
     firestore.collection('AMB').doc('$car' + '$name').set({
-      'CAR': int.parse(car),
+      'CAR': car,
       'LOCATION': location,
       'NAME': name,
       "AGE": age,
