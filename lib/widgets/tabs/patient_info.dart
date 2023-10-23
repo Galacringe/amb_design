@@ -75,7 +75,6 @@ class _Patient_InfoState extends State<Patient_Info>
 
   // 태그 모음
   final _tags = [
-    "???",
     "화상",
     "동상",
     "외상",
@@ -247,6 +246,7 @@ class _Patient_InfoState extends State<Patient_Info>
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text("환자 정보"),
       ),
       body: SingleChildScrollView(
@@ -283,7 +283,7 @@ class _Patient_InfoState extends State<Patient_Info>
                     width: 34,
                   ),
                   SizedBox(
-                    width: 40,
+                    width: 50,
                     height: 40,
                     child: TextField(
                       keyboardType: TextInputType.number,
@@ -427,108 +427,69 @@ class _Patient_InfoState extends State<Patient_Info>
                 "혈액형",
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
               ),
-              DropdownButton(
-                value: bloodTypeSelected,
-                items: _bloodType
-                    .map((location) => DropdownMenuItem(
-                        value: location, child: Text(location)))
-                    .toList(),
-                onChanged: (blood) {
-                  setState(() {
-                    bloodTypeSelected = blood!;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 18,
-              ),
-              Text(
-                "태그 - 환자의 중요사항을 알려주세요!",
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
                   DropdownButton(
-                    value: tags1,
-                    items: _tags
+                    value: bloodTypeSelected,
+                    items: _bloodType
                         .map((location) => DropdownMenuItem(
                             value: location, child: Text(location)))
                         .toList(),
-                    onChanged: (tag) {
+                    onChanged: (blood) {
                       setState(() {
-                        tags1 = tag!;
+                        bloodTypeSelected = blood!;
                       });
                     },
                   ),
-                  DropdownButton(
-                    value: tags2,
-                    items: _tags
-                        .map((location) => DropdownMenuItem(
-                            value: location, child: Text(location)))
-                        .toList(),
-                    onChanged: (tag) {
-                      setState(() {
-                        tags2 = tag!;
-                      });
-                    },
-                  ),
-                  Row(
-                    children: [
-                      DropdownButton(
-                        value: tags3,
-                        items: _tags
-                            .map((location) => DropdownMenuItem(
-                                value: location, child: Text(location)))
-                            .toList(),
-                        onChanged: (tag) {
-                          setState(() {
-                            tags3 = tag!;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _checkDB(carCode, location);
-                        },
-                        child: Text("등록 전 저장하기"),
-                      ),
-                    ],
-                  ),
+                  SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _tags.length,
+                      itemBuilder: (c, i) {
+                        return TextButton(
+                            child: Text('$_tags[i]'), onPressed: () {});
+                      },
+                    ),
+                  )
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        child: ElevatedButton(
-          child: Text("등록하기!"),
-          onPressed: () {
-            try {
-              var id = _sendDB(
-                  carCode,
-                  location,
-                  patientName.text,
-                  sliderValue,
-                  patientInfo.text,
-                  bloodTypeSelected,
-                  tags1,
-                  tags2,
-                  tags3,
-                  patientAge.text);
+        child: ButtonBar(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                _checkDB(carCode, location);
+              },
+              child: Text("등록 전 저장하기"),
+            ),
+            ElevatedButton(
+              child: Text("등록하기"),
+              onPressed: () {
+                try {
+                  var id = _sendDB(
+                      carCode,
+                      location,
+                      patientName.text,
+                      sliderValue,
+                      patientInfo.text,
+                      bloodTypeSelected,
+                      tags1,
+                      tags2,
+                      tags3,
+                      patientAge.text);
 
-              _showPopDB(context, "등록이 완료되었습니다.", carCode, location);
-            } catch (e) {
-              _showTextPop(context, "문제가 발생했습니다. \n" + e.toString());
-            }
-          },
+                  _showPopDB(context, "등록이 완료되었습니다.", carCode, location);
+                } catch (e) {
+                  _showTextPop(context, "문제가 발생했습니다. \n" + e.toString());
+                }
+              },
+            )
+          ],
         ),
       ),
     );

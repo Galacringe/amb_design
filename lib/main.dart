@@ -21,6 +21,7 @@ void main() async {
     MaterialApp(
       title: "ESamb",
       home: MyApp(),
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'NotoSerifKR'),
 
       // 앱 이동 루트,  여기 없으면 새 .dart파일로 창 만들어도 이동 못함
