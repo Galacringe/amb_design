@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:emergenshare_amb/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
@@ -49,11 +52,9 @@ class _Patient_InfoState extends State<Patient_Info>
   TextEditingController patientName = TextEditingController();
   TextEditingController patientAge = TextEditingController();
 
-  //KTAS 슬라이더
-  var sliderValue = 4.0;
-  Color activeColor = Colors.green;
-  Color secondaryActiveColor = Colors.greenAccent;
-  Color incativeColor = Colors.lightGreen;
+  //KTAS 토글버튼
+  var sliderValue = 1.0;
+  List<bool> KTAS = [true, false, false, false, false];
 
   //환자 정보 글
   TextEditingController patientInfo = TextEditingController();
@@ -75,7 +76,6 @@ class _Patient_InfoState extends State<Patient_Info>
 
   // 태그 모음
   final _tags = [
-    "???",
     "화상",
     "동상",
     "외상",
@@ -247,6 +247,7 @@ class _Patient_InfoState extends State<Patient_Info>
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text("환자 정보"),
       ),
       body: SingleChildScrollView(
@@ -273,9 +274,9 @@ class _Patient_InfoState extends State<Patient_Info>
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                       decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        label: Text("이름"),
-                      ),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          label: Text("이름"),
+                          hintText: '이름'),
                       inputFormatters: [LengthLimitingTextInputFormatter(4)],
                     ),
                   ),
@@ -283,7 +284,7 @@ class _Patient_InfoState extends State<Patient_Info>
                     width: 34,
                   ),
                   SizedBox(
-                    width: 40,
+                    width: 50,
                     height: 40,
                     child: TextField(
                       keyboardType: TextInputType.number,
@@ -351,43 +352,25 @@ class _Patient_InfoState extends State<Patient_Info>
               SizedBox(
                 height: 5,
               ),
-              Slider(
-                value: sliderValue,
-                activeColor: activeColor, // 위에 변수
-                secondaryActiveColor: secondaryActiveColor,
-                inactiveColor: incativeColor,
-                min: 1.0,
-                max: 5.0,
-                divisions: 4,
-                label: '${sliderValue.round()}',
-                onChanged: (double newValue) {
-                  setState(
-                    () {
-                      switch (newValue) {
-                        case 1:
-                          activeColor = Colors.red;
-                          secondaryActiveColor = Colors.black;
-                          incativeColor = Colors.deepOrangeAccent;
-                        case 2:
-                          activeColor = Colors.orange;
-                          secondaryActiveColor = Colors.orangeAccent;
-                          incativeColor = Colors.deepOrange;
-                        case 3:
-                          activeColor = Colors.yellow;
-                          secondaryActiveColor = Colors.yellowAccent;
-                          incativeColor = Colors.yellowAccent;
-                        case 4:
-                          activeColor = Colors.green;
-                          secondaryActiveColor = Colors.greenAccent;
-                          incativeColor = Colors.lightGreen;
-                        case 5:
-                          activeColor = Colors.lightBlueAccent;
-                          secondaryActiveColor = Colors.lightBlueAccent;
-                          incativeColor = Colors.lightBlue;
-                      }
-                      sliderValue = newValue;
-                    },
-                  );
+              ToggleButtons(
+                children: [
+                  Text('1'),
+                  Text('2'),
+                  Text('3'),
+                  Text('4'),
+                  Text('5')
+                ],
+                isSelected: KTAS,
+                onPressed: (int index) {
+                  setState(() {
+                    for (int bi = 0; bi < KTAS.length; bi++) {
+                      if (bi == index)
+                        KTAS[bi] = true;
+                      else
+                        KTAS[bi] = false;
+                    }
+                  });
+                  sliderValue = double.parse((index + 1).toString());
                 },
               ),
               SizedBox(
@@ -427,108 +410,77 @@ class _Patient_InfoState extends State<Patient_Info>
                 "혈액형",
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
               ),
-              DropdownButton(
-                value: bloodTypeSelected,
-                items: _bloodType
-                    .map((location) => DropdownMenuItem(
-                        value: location, child: Text(location)))
-                    .toList(),
-                onChanged: (blood) {
-                  setState(() {
-                    bloodTypeSelected = blood!;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 18,
-              ),
-              Text(
-                "태그 - 환자의 중요사항을 알려주세요!",
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
                   DropdownButton(
-                    value: tags1,
-                    items: _tags
+                    value: bloodTypeSelected,
+                    items: _bloodType
                         .map((location) => DropdownMenuItem(
                             value: location, child: Text(location)))
                         .toList(),
-                    onChanged: (tag) {
+                    onChanged: (blood) {
                       setState(() {
-                        tags1 = tag!;
+                        bloodTypeSelected = blood!;
                       });
                     },
                   ),
-                  DropdownButton(
-                    value: tags2,
-                    items: _tags
-                        .map((location) => DropdownMenuItem(
-                            value: location, child: Text(location)))
-                        .toList(),
-                    onChanged: (tag) {
-                      setState(() {
-                        tags2 = tag!;
-                      });
-                    },
-                  ),
-                  Row(
-                    children: [
-                      DropdownButton(
-                        value: tags3,
-                        items: _tags
-                            .map((location) => DropdownMenuItem(
-                                value: location, child: Text(location)))
-                            .toList(),
-                        onChanged: (tag) {
-                          setState(() {
-                            tags3 = tag!;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _checkDB(carCode, location);
-                        },
-                        child: Text("등록 전 저장하기"),
-                      ),
-                    ],
-                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 3)),
+                          height: 50,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _tags.length,
+                              itemBuilder: (c, i) {
+                                return TextButton(
+                                    child: Text(_tags[i],
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 15)),
+                                    onPressed: () {});
+                              })))
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        child: ElevatedButton(
-          child: Text("등록하기!"),
-          onPressed: () {
-            try {
-              var id = _sendDB(
-                  carCode,
-                  location,
-                  patientName.text,
-                  sliderValue,
-                  patientInfo.text,
-                  bloodTypeSelected,
-                  tags1,
-                  tags2,
-                  tags3,
-                  patientAge.text);
+        child: ButtonBar(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                _checkDB(carCode, location);
+              },
+              child: Text("등록 전 저장하기"),
+            ),
+            ElevatedButton(
+              child: Text("등록하기"),
+              onPressed: () {
+                try {
+                  var id = _sendDB(
+                      carCode,
+                      location,
+                      patientName.text,
+                      sliderValue,
+                      patientInfo.text,
+                      bloodTypeSelected,
+                      tags1,
+                      tags2,
+                      tags3,
+                      patientAge.text);
 
-              _showPopDB(context, "등록이 완료되었습니다.", carCode, location);
-            } catch (e) {
-              _showTextPop(context, "문제가 발생했습니다. \n" + e.toString());
-            }
-          },
+                  _showPopDB(context, "등록이 완료되었습니다.", carCode, location);
+                } catch (e) {
+                  _showTextPop(context, "문제가 발생했습니다. \n" + e.toString());
+                }
+              },
+            )
+          ],
         ),
       ),
     );
