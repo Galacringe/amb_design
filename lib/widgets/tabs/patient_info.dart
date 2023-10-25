@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
 
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:emergenshare_amb/main.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,13 @@ class _Patient_InfoState extends State<Patient_Info>
   //KTAS 토글버튼
   var sliderValue = 1.0;
   List<bool> KTAS = [true, false, false, false, false];
+  List<String> colors = [
+    'Colors.blue',
+    'Colors.red',
+    'Colors.yellow',
+    'Colors.green',
+    'Colors.black'
+  ];
 
   //환자 정보 글
   TextEditingController patientInfo = TextEditingController();
@@ -246,6 +254,7 @@ class _Patient_InfoState extends State<Patient_Info>
     //displayToast(res, true);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text("환자 정보"),
@@ -353,25 +362,52 @@ class _Patient_InfoState extends State<Patient_Info>
                 height: 5,
               ),
               ToggleButtons(
-                children: [
-                  Text('1'),
-                  Text('2'),
-                  Text('3'),
-                  Text('4'),
-                  Text('5')
-                ],
+                borderColor: Colors.white,
+                borderRadius: BorderRadius.circular(40),
+                fillColor: colors[sliderValue - 1],
                 isSelected: KTAS,
                 onPressed: (int index) {
                   setState(() {
                     for (int bi = 0; bi < KTAS.length; bi++) {
-                      if (bi == index)
-                        KTAS[bi] = true;
-                      else
-                        KTAS[bi] = false;
+                      KTAS[bi] = bi == index;
                     }
                   });
                   sliderValue = double.parse((index + 1).toString());
                 },
+                children: [
+                  Container(
+                      width: 70,
+                      alignment: Alignment.center,
+                      child: Text('1', style: TextStyle(fontSize: 20))),
+                  Container(
+                    height: 30,
+                    width: 70,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            left: BorderSide(color: Colors.black, width: 2),
+                            right: BorderSide(color: Colors.black, width: 2))),
+                    child: Text('2', style: TextStyle(fontSize: 20)),
+                  ),
+                  Container(
+                      width: 70,
+                      alignment: Alignment.center,
+                      child: Text('3', style: TextStyle(fontSize: 20))),
+                  Container(
+                    height: 30,
+                    width: 70,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            left: BorderSide(color: Colors.black, width: 2),
+                            right: BorderSide(color: Colors.black, width: 2))),
+                    child: Text('4', style: TextStyle(fontSize: 20)),
+                  ),
+                  Container(
+                      width: 70,
+                      alignment: Alignment.center,
+                      child: Text('5', style: TextStyle(fontSize: 20)))
+                ],
               ),
               SizedBox(
                 height: 5,
