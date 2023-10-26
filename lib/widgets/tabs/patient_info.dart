@@ -56,13 +56,6 @@ class _Patient_InfoState extends State<Patient_Info>
   //KTAS 토글버튼
   var sliderValue = 1.0;
   List<bool> KTAS = [true, false, false, false, false];
-  List<String> colors = [
-    'Colors.blue',
-    'Colors.red',
-    'Colors.yellow',
-    'Colors.green',
-    'Colors.black'
-  ];
 
   //환자 정보 글
   TextEditingController patientInfo = TextEditingController();
@@ -364,7 +357,6 @@ class _Patient_InfoState extends State<Patient_Info>
               ToggleButtons(
                 borderColor: Colors.white,
                 borderRadius: BorderRadius.circular(40),
-                fillColor: colors[sliderValue - 1],
                 isSelected: KTAS,
                 onPressed: (int index) {
                   setState(() {
