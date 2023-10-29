@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
 
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:emergenshare_amb/main.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +55,21 @@ class _Patient_InfoState extends State<Patient_Info>
   //KTAS 토글버튼
   var sliderValue = 1.0;
   List<bool> KTAS = [true, false, false, false, false];
+
+  Color kc(double num) {
+    switch (num) {
+      case 1:
+        return Colors.blue;
+      case 2:
+        return Colors.red;
+      case 3:
+        return Color.fromARGB(181, 255, 226, 59);
+      case 4:
+        return Colors.green;
+      default:
+        return Colors.black;
+    }
+  }
 
   //환자 정보 글
   TextEditingController patientInfo = TextEditingController();
@@ -316,19 +330,17 @@ class _Patient_InfoState extends State<Patient_Info>
               SizedBox(
                 height: 20,
               ),
-              Row(
+              Column(
                 children: [
-                  Text(
-                    "환자 예상 KTAS 단계",
-                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
-                  ),
-                  SizedBox(
-                    width: 7,
-                  ),
-                  Column(
+                  Row(
                     children: [
+                      Text(
+                        "환자 예상 KTAS 단계",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w800, fontSize: 16),
+                      ),
                       SizedBox(
-                        height: 2,
+                        width: 7,
                       ),
                       Container(
                         height: 20,
@@ -348,59 +360,78 @@ class _Patient_InfoState extends State<Patient_Info>
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 5,
-              ),
-              ToggleButtons(
-                borderColor: Colors.white,
-                borderRadius: BorderRadius.circular(40),
-                isSelected: KTAS,
-                onPressed: (int index) {
-                  setState(() {
-                    for (int bi = 0; bi < KTAS.length; bi++) {
-                      KTAS[bi] = bi == index;
-                    }
-                  });
-                  sliderValue = double.parse((index + 1).toString());
-                },
-                children: [
-                  Container(
-                      width: 70,
-                      alignment: Alignment.center,
-                      child: Text('1', style: TextStyle(fontSize: 20))),
-                  Container(
-                    height: 30,
-                    width: 70,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            left: BorderSide(color: Colors.black, width: 2),
-                            right: BorderSide(color: Colors.black, width: 2))),
-                    child: Text('2', style: TextStyle(fontSize: 20)),
-                  ),
-                  Container(
-                      width: 70,
-                      alignment: Alignment.center,
-                      child: Text('3', style: TextStyle(fontSize: 20))),
-                  Container(
-                    height: 30,
-                    width: 70,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            left: BorderSide(color: Colors.black, width: 2),
-                            right: BorderSide(color: Colors.black, width: 2))),
-                    child: Text('4', style: TextStyle(fontSize: 20)),
-                  ),
-                  Container(
-                      width: 70,
-                      alignment: Alignment.center,
-                      child: Text('5', style: TextStyle(fontSize: 20)))
-                ],
-              ),
+              Container(
+                  width: 335,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, 1),
+                        )
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(40)),
+                  child: ToggleButtons(
+                    renderBorder: false,
+                    splashColor: Colors.transparent,
+                    textStyle:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    borderRadius: BorderRadius.circular(40),
+                    fillColor: kc(sliderValue),
+                    selectedColor: Colors.white,
+                    isSelected: KTAS,
+                    onPressed: (int index) {
+                      setState(() {
+                        for (int bi = 0; bi < KTAS.length; bi++) {
+                          KTAS[bi] = bi == index;
+                        }
+                      });
+                      sliderValue = double.parse((index + 1).toString());
+                    },
+                    children: [
+                      Container(
+                          width: 67,
+                          alignment: Alignment.center,
+                          child: Text('1')),
+                      Container(
+                        height: 30,
+                        width: 67,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            border: Border(
+                                left: BorderSide(color: Colors.black, width: 2),
+                                right:
+                                    BorderSide(color: Colors.black, width: 2))),
+                        child: Text('2'),
+                      ),
+                      Container(
+                          width: 67,
+                          alignment: Alignment.center,
+                          child: Text('3')),
+                      Container(
+                        height: 30,
+                        width: 67,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            border: Border(
+                                left:
+                                    BorderSide(color: Colors.black, width: 2.3),
+                                right:
+                                    BorderSide(color: Colors.black, width: 2))),
+                        child: Text('4'),
+                      ),
+                      Container(
+                          width: 67,
+                          alignment: Alignment.center,
+                          child: Text('5'))
+                    ],
+                  )),
               SizedBox(
                 height: 5,
               ),
