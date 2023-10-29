@@ -87,6 +87,8 @@ class _Hospital_InfomationState extends State<Hospital_Infomation>
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
         title: Row(
           children: [
             Text("병원 확인하기"),
@@ -157,49 +159,59 @@ class _Hospital_InfomationState extends State<Hospital_Infomation>
                       ),
                     ),
                     Container(
-                      height: 200,
-                      width: 200,
+                      height: 230,
+                      width: 300,
                       child: Image.network(snapshot.data?["IMAGE"]),
                     ),
                     Text(snapshot.data?["INFO"]),
                     Text("여기에 AI 값 1"),
                     Text("여기에 AI 값 2"),
-                    Row(
-                      children: [
-                        Text(snapshot.data?["ADDRESS"]),
-                        IconButton(
-                            onPressed: () {
-                              Clipboard.setData(ClipboardData(
-                                  text: snapshot.data?["ADDRESS"]));
-                              displayToast("복사되었습니다!", false);
-                            },
-                            tooltip: "복사하기",
-                            icon: Icon(Icons.copy)),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(snapshot.data?["CALL"]),
-                        IconButton(
-                            onPressed: () {
-                              launchUrl(
-                                  Uri.parse("tel:" + snapshot.data?["CALL"]));
-                            },
-                            tooltip: "복사하기",
-                            icon: Icon(Icons.call)),
-                      ],
-                    ),
+                    ListTile(
+                        leading: Icon(Icons.apartment_rounded,
+                            size: 70, color: Colors.black),
+                        title: Row(
+                          children: [
+                            Text(snapshot.data?["ADDRESS"]),
+                            IconButton(
+                                onPressed: () {
+                                  Clipboard.setData(ClipboardData(
+                                      text: snapshot.data?["ADDRESS"]));
+                                  displayToast("복사되었습니다!", false);
+                                },
+                                tooltip: "복사하기",
+                                icon: Icon(Icons.copy)),
+                          ],
+                        ),
+                        subtitle: Row(
+                          children: [
+                            Text(snapshot.data?["CALL"]),
+                            IconButton(
+                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                constraints: BoxConstraints(),
+                                onPressed: () {
+                                  launchUrl(Uri.parse(
+                                      "tel:" + snapshot.data?["CALL"]));
+                                },
+                                tooltip: "전화하기",
+                                icon: Icon(Icons.call)),
+                          ],
+                        )),
                     SizedBox(
                       height: 50,
                     ),
-                    Text("공지"),
+                    Text("공지",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.w600)),
                     Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.all(10),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Text(snapshot.data?["BROADCAST"]),
+                      child: Text(snapshot.data?["BROADCAST"],
+                          style: TextStyle(fontSize: 15)),
                     ),
                   ],
                 ),

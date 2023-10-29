@@ -14,6 +14,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:emergenshare_amb/widgets/custom_switch.dart';
+
 class Patient_Info extends StatefulWidget {
   const Patient_Info({super.key});
 
@@ -71,6 +73,9 @@ class _Patient_InfoState extends State<Patient_Info>
     }
   }
 
+  bool gen = false;
+  String sex = "";
+
   //환자 정보 글
   TextEditingController patientInfo = TextEditingController();
 
@@ -113,6 +118,70 @@ class _Patient_InfoState extends State<Patient_Info>
     "저체온증",
     "저혈압",
   ];
+  final List<bool> chips = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+  int chipnum = 0;
+  Widget _buildChips() {
+    List<Widget> symchip = [];
+
+    for (int i = 0; i < _tags.length; i++) {
+      FilterChip filterChip = FilterChip(
+        selected: chips[i],
+        label: Text(_tags[i],
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 13)),
+        shadowColor: Colors.teal,
+        backgroundColor: Colors.black26,
+        selectedColor: Colors.blue,
+        onSelected: (bool selected) {
+          setState(() {
+            if (selected == false) {
+              chips[i] = selected;
+              ftag.remove(_tags[i]);
+              chipnum--;
+            } else if (chipnum >= 3) {
+              Fluttertoast.showToast(msg: '현재는 3개 이상 선택할 수 없습니다.');
+            } else {
+              chips[i] = selected;
+              ftag.add(_tags[i]);
+              chipnum++;
+            }
+          });
+        },
+      );
+
+      symchip.add(Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10), child: filterChip));
+    }
+
+    return Wrap(children: symchip);
+  }
+
+  List<String> ftag = [];
+
   String tags1 = "???";
   String tags2 = "???";
   String tags3 = "???";
@@ -272,9 +341,36 @@ class _Patient_InfoState extends State<Patient_Info>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "환자 정보를 입력해주세요!",
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+              Row(
+                children: [
+                  Text("환자 정보를 입력해주세요!",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                  Text('    성별 :',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                  SizedBox(
+                    width: 50,
+                    child: CustomSwitch(
+                        toggleWidth: 20,
+                        toggleHeight: 20,
+                        trackWidth: 50,
+                        trackHeight: 22,
+                        trackActiveColor: Colors.blue,
+                        trackInActiveColor: Colors.red,
+                        value: gen,
+                        onChanged: (value) {
+                          setState(() {
+                            gen = value;
+                          });
+                          if (gen) {
+                            sex = "남자";
+                          } else {
+                            sex = "여자";
+                          }
+                        }),
+                  )
+                ],
               ),
               SizedBox(
                 height: 8,
@@ -282,14 +378,18 @@ class _Patient_InfoState extends State<Patient_Info>
               Row(
                 children: [
                   SizedBox(
-                    width: 80,
-                    height: 40,
+                    width: 100,
+                    height: 50,
                     child: TextField(
-                      controller: patientName,
                       textAlignVertical: TextAlignVertical.bottom,
+                      controller: patientName,
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                       decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(10)),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           label: Text("이름"),
                           hintText: '이름'),
@@ -297,34 +397,52 @@ class _Patient_InfoState extends State<Patient_Info>
                     ),
                   ),
                   SizedBox(
-                    width: 34,
+                    width: 10,
                   ),
                   SizedBox(
-                    width: 50,
-                    height: 40,
+                    width: 80,
+                    height: 50,
                     child: TextField(
+                      textAlignVertical: TextAlignVertical.top,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(3)
                       ],
                       controller: patientAge,
-                      textAlignVertical: TextAlignVertical.bottom,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                      ),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                       decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.never,
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(10)),
                           label: Text(
                             "나이",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                            ),
                           ),
                           alignLabelWithHint: true),
                     ),
                   ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  DropdownMenu(
+                    width: 117,
+                    label: Text('혈액형'),
+                    initialSelection: _bloodType[0],
+                    dropdownMenuEntries: _bloodType
+                        .map<DropdownMenuEntry<String>>((String value) {
+                      return DropdownMenuEntry<String>(
+                          value: value, label: value);
+                    }).toList(),
+                    onSelected: (blood) {
+                      setState(() {
+                        bloodTypeSelected = blood!;
+                      });
+                    },
+                    textStyle: TextStyle(fontWeight: FontWeight.w600),
+                  )
                 ],
               ),
               SizedBox(
@@ -364,8 +482,8 @@ class _Patient_InfoState extends State<Patient_Info>
                 ],
               ),
               Container(
-                  width: 335,
                   height: 40,
+                  margin: EdgeInsets.only(top: 10),
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -396,12 +514,12 @@ class _Patient_InfoState extends State<Patient_Info>
                     },
                     children: [
                       Container(
-                          width: 67,
+                          width: 70,
                           alignment: Alignment.center,
                           child: Text('1')),
                       Container(
                         height: 30,
-                        width: 67,
+                        width: 70,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             border: Border(
@@ -411,12 +529,12 @@ class _Patient_InfoState extends State<Patient_Info>
                         child: Text('2'),
                       ),
                       Container(
-                          width: 67,
+                          width: 70,
                           alignment: Alignment.center,
                           child: Text('3')),
                       Container(
                         height: 30,
-                        width: 67,
+                        width: 70,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             border: Border(
@@ -427,9 +545,9 @@ class _Patient_InfoState extends State<Patient_Info>
                         child: Text('4'),
                       ),
                       Container(
-                          width: 67,
+                          width: 70,
                           alignment: Alignment.center,
-                          child: Text('5'))
+                          child: Text('5')),
                     ],
                   )),
               SizedBox(
@@ -443,65 +561,39 @@ class _Patient_InfoState extends State<Patient_Info>
                 height: 5,
               ),
               Container(
-                width: 350,
-                height: 90,
-                child: Container(
-                  height: 70,
-                  child: TextField(
-                    maxLength: 150,
-                    controller: patientInfo,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
-                    textAlign: TextAlign.start,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(150),
-                    ],
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-              ),
+                  width: 400,
+                  height: 135,
+                  child: Container(
+                      height: 135,
+                      child: TextField(
+                          maxLength: 150,
+                          controller: patientInfo,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 4,
+                          textAlign: TextAlign.start,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(150),
+                          ],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          )))),
               SizedBox(
                 height: 8,
               ),
               Text(
-                "혈액형",
+                "환자의 증상을 알려주세요.",
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
               ),
               Row(
                 children: [
-                  DropdownButton(
-                    value: bloodTypeSelected,
-                    items: _bloodType
-                        .map((location) => DropdownMenuItem(
-                            value: location, child: Text(location)))
-                        .toList(),
-                    onChanged: (blood) {
-                      setState(() {
-                        bloodTypeSelected = blood!;
-                      });
-                    },
-                  ),
                   Expanded(
                       flex: 1,
                       child: Container(
                           decoration: BoxDecoration(
                               border:
                                   Border.all(color: Colors.black, width: 3)),
-                          height: 50,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _tags.length,
-                              itemBuilder: (c, i) {
-                                return TextButton(
-                                    child: Text(_tags[i],
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 15)),
-                                    onPressed: () {});
-                              })))
+                          height: 295,
+                          child: _buildChips()))
                 ],
               ),
             ],
@@ -510,6 +602,7 @@ class _Patient_InfoState extends State<Patient_Info>
       ),
       bottomNavigationBar: BottomAppBar(
         child: ButtonBar(
+          alignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () {
@@ -521,6 +614,10 @@ class _Patient_InfoState extends State<Patient_Info>
               child: Text("등록하기"),
               onPressed: () {
                 try {
+                  tags1 = ftag[0];
+                  tags2 = ftag[1];
+                  tags3 = ftag[2];
+
                   var id = _sendDB(
                       carCode,
                       location,

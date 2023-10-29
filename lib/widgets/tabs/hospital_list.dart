@@ -90,6 +90,8 @@ class _Hospital_ListState extends State<Hospital_List>
     //body에서 병원 실시간 표시 StreamBuilder
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
         title: Row(
           children: [
             Text("병원 확인하기"),
