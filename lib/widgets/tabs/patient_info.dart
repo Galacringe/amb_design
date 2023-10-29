@@ -120,6 +120,70 @@ class _Patient_InfoState extends State<Patient_Info>
     "저체온증",
     "저혈압",
   ];
+  final List<bool> chips = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+  int chipnum = 0;
+  Widget _buildChips() {
+    List<Widget> symchip = [];
+
+    for (int i = 0; i < _tags.length; i++) {
+      FilterChip filterChip = FilterChip(
+        selected: chips[i],
+        label: Text(_tags[i],
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 13)),
+        shadowColor: Colors.teal,
+        backgroundColor: Colors.black26,
+        selectedColor: Colors.blue,
+        onSelected: (bool selected) {
+          setState(() {
+            if (selected == false) {
+              chips[i] = selected;
+              ftag.remove(_tags[i]);
+              chipnum--;
+            } else if (chipnum >= 3) {
+              Fluttertoast.showToast(msg: '현재는 3개 이상 선택할 수 없습니다.');
+            } else {
+              chips[i] = selected;
+              ftag.add(_tags[i]);
+              chipnum++;
+            }
+          });
+        },
+      );
+
+      symchip.add(Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10), child: filterChip));
+    }
+
+    return Wrap(children: symchip);
+  }
+
+  List<String> ftag = [];
+
   String tags1 = "???";
   String tags2 = "???";
   String tags3 = "???";
@@ -336,10 +400,10 @@ class _Patient_InfoState extends State<Patient_Info>
                     ),
                   ),
                   SizedBox(
-                    width: 34,
+                    width: 50,
                   ),
                   DropdownMenu(
-                    width: 110,
+                    width: 120,
                     label: Text('혈액형'),
                     initialSelection: _bloodType[0],
                     dropdownMenuEntries: _bloodType
@@ -425,12 +489,12 @@ class _Patient_InfoState extends State<Patient_Info>
                     },
                     children: [
                       Container(
-                          width: 67,
+                          width: 75,
                           alignment: Alignment.center,
                           child: Text('1')),
                       Container(
                         height: 30,
-                        width: 67,
+                        width: 75,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             border: Border(
@@ -440,12 +504,12 @@ class _Patient_InfoState extends State<Patient_Info>
                         child: Text('2'),
                       ),
                       Container(
-                          width: 67,
+                          width: 75,
                           alignment: Alignment.center,
                           child: Text('3')),
                       Container(
                         height: 30,
-                        width: 67,
+                        width: 75,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             border: Border(
@@ -456,7 +520,7 @@ class _Patient_InfoState extends State<Patient_Info>
                         child: Text('4'),
                       ),
                       Container(
-                          width: 67,
+                          width: 75,
                           alignment: Alignment.center,
                           child: Text('5')),
                     ],
@@ -472,30 +536,27 @@ class _Patient_InfoState extends State<Patient_Info>
                 height: 5,
               ),
               Container(
-                width: 350,
-                height: 90,
-                child: Container(
-                  height: 70,
-                  child: TextField(
-                    maxLength: 150,
-                    controller: patientInfo,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
-                    textAlign: TextAlign.start,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(150),
-                    ],
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-              ),
+                  width: 400,
+                  height: 135,
+                  child: Container(
+                      height: 135,
+                      child: TextField(
+                          maxLength: 150,
+                          controller: patientInfo,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 4,
+                          textAlign: TextAlign.start,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(150),
+                          ],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          )))),
               SizedBox(
                 height: 8,
               ),
               Text(
-                "혈액형",
+                "환자의 증상을 알려주세요.",
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
               ),
               Row(
@@ -506,19 +567,8 @@ class _Patient_InfoState extends State<Patient_Info>
                           decoration: BoxDecoration(
                               border:
                                   Border.all(color: Colors.black, width: 3)),
-                          height: 50,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _tags.length,
-                              itemBuilder: (c, i) {
-                                return TextButton(
-                                    child: Text(_tags[i],
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 15)),
-                                    onPressed: () {});
-                              })))
+                          height: 295,
+                          child: _buildChips()))
                 ],
               ),
             ],
@@ -539,6 +589,10 @@ class _Patient_InfoState extends State<Patient_Info>
               child: Text("등록하기"),
               onPressed: () {
                 try {
+                  tags1 = ftag[0];
+                  tags2 = ftag[1];
+                  tags3 = ftag[2];
+
                   var id = _sendDB(
                       carCode,
                       location,
