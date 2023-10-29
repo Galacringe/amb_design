@@ -14,6 +14,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:emergenshare_amb/widgets/custom_switch.dart';
+
 class Patient_Info extends StatefulWidget {
   const Patient_Info({super.key});
 
@@ -77,6 +79,9 @@ class _Patient_InfoState extends State<Patient_Info>
         return Colors.black;
     }
   }
+
+  bool gen = false;
+  String sex = "";
 
   //환자 정보 글
   TextEditingController patientInfo = TextEditingController();
@@ -343,9 +348,36 @@ class _Patient_InfoState extends State<Patient_Info>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "환자 정보를 입력해주세요!",
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+              Row(
+                children: [
+                  Text("환자 정보를 입력해주세요!",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                  Text('    성별 :',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                  SizedBox(
+                    width: 50,
+                    child: CustomSwitch(
+                        toggleWidth: 20,
+                        toggleHeight: 20,
+                        trackWidth: 50,
+                        trackHeight: 22,
+                        trackActiveColor: Colors.blue,
+                        trackInActiveColor: Colors.red,
+                        value: gen,
+                        onChanged: (value) {
+                          setState(() {
+                            gen = value;
+                          });
+                          if (gen) {
+                            sex = "남자";
+                          } else {
+                            sex = "여자";
+                          }
+                        }),
+                  )
+                ],
               ),
               SizedBox(
                 height: 8,
@@ -400,10 +432,10 @@ class _Patient_InfoState extends State<Patient_Info>
                     ),
                   ),
                   SizedBox(
-                    width: 50,
+                    width: 30,
                   ),
                   DropdownMenu(
-                    width: 120,
+                    width: 117,
                     label: Text('혈액형'),
                     initialSelection: _bloodType[0],
                     dropdownMenuEntries: _bloodType
@@ -489,12 +521,12 @@ class _Patient_InfoState extends State<Patient_Info>
                     },
                     children: [
                       Container(
-                          width: 75,
+                          width: 70,
                           alignment: Alignment.center,
                           child: Text('1')),
                       Container(
                         height: 30,
-                        width: 75,
+                        width: 70,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             border: Border(
@@ -504,12 +536,12 @@ class _Patient_InfoState extends State<Patient_Info>
                         child: Text('2'),
                       ),
                       Container(
-                          width: 75,
+                          width: 70,
                           alignment: Alignment.center,
                           child: Text('3')),
                       Container(
                         height: 30,
-                        width: 75,
+                        width: 70,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             border: Border(
@@ -520,7 +552,7 @@ class _Patient_InfoState extends State<Patient_Info>
                         child: Text('4'),
                       ),
                       Container(
-                          width: 75,
+                          width: 70,
                           alignment: Alignment.center,
                           child: Text('5')),
                     ],

@@ -86,7 +86,7 @@ class _Hospital_ReservationState extends State<Hospital_Reservation>
     doctem = _args['doc'];
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: Colors.black, elevation: 0),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: FirebaseFirestore.instance
               .collection("HOSPITAL")
