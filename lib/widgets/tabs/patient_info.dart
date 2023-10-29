@@ -289,14 +289,18 @@ class _Patient_InfoState extends State<Patient_Info>
               Row(
                 children: [
                   SizedBox(
-                    width: 80,
-                    height: 40,
+                    width: 100,
+                    height: 50,
                     child: TextField(
-                      controller: patientName,
                       textAlignVertical: TextAlignVertical.bottom,
+                      controller: patientName,
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                       decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(10)),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           label: Text("이름"),
                           hintText: '이름'),
@@ -304,34 +308,52 @@ class _Patient_InfoState extends State<Patient_Info>
                     ),
                   ),
                   SizedBox(
-                    width: 34,
+                    width: 10,
                   ),
                   SizedBox(
-                    width: 50,
-                    height: 40,
+                    width: 80,
+                    height: 50,
                     child: TextField(
+                      textAlignVertical: TextAlignVertical.top,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(3)
                       ],
                       controller: patientAge,
-                      textAlignVertical: TextAlignVertical.bottom,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                      ),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                       decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.never,
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(10)),
                           label: Text(
                             "나이",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                            ),
                           ),
                           alignLabelWithHint: true),
                     ),
                   ),
+                  SizedBox(
+                    width: 34,
+                  ),
+                  DropdownMenu(
+                    width: 110,
+                    label: Text('혈액형'),
+                    initialSelection: _bloodType[0],
+                    dropdownMenuEntries: _bloodType
+                        .map<DropdownMenuEntry<String>>((String value) {
+                      return DropdownMenuEntry<String>(
+                          value: value, label: value);
+                    }).toList(),
+                    onSelected: (blood) {
+                      setState(() {
+                        bloodTypeSelected = blood!;
+                      });
+                    },
+                    textStyle: TextStyle(fontWeight: FontWeight.w600),
+                  )
                 ],
               ),
               SizedBox(
@@ -371,8 +393,8 @@ class _Patient_InfoState extends State<Patient_Info>
                 ],
               ),
               Container(
-                  width: 335,
                   height: 40,
+                  margin: EdgeInsets.only(top: 10),
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -436,7 +458,7 @@ class _Patient_InfoState extends State<Patient_Info>
                       Container(
                           width: 67,
                           alignment: Alignment.center,
-                          child: Text('5'))
+                          child: Text('5')),
                     ],
                   )),
               SizedBox(
@@ -478,18 +500,6 @@ class _Patient_InfoState extends State<Patient_Info>
               ),
               Row(
                 children: [
-                  DropdownButton(
-                    value: bloodTypeSelected,
-                    items: _bloodType
-                        .map((location) => DropdownMenuItem(
-                            value: location, child: Text(location)))
-                        .toList(),
-                    onChanged: (blood) {
-                      setState(() {
-                        bloodTypeSelected = blood!;
-                      });
-                    },
-                  ),
                   Expanded(
                       flex: 1,
                       child: Container(
@@ -517,6 +527,7 @@ class _Patient_InfoState extends State<Patient_Info>
       ),
       bottomNavigationBar: BottomAppBar(
         child: ButtonBar(
+          alignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () {
