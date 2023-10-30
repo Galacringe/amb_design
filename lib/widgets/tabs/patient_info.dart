@@ -272,8 +272,8 @@ class _Patient_InfoState extends State<Patient_Info>
   }
 
   // DB 전송
-  void _sendDB(
-      car, location, name, ktas, info, blood, tag1, tag2, tag3, age) async {
+  void _sendDB(car, location, name, ktas, info, blood, tag1, tag2, tag3, age,
+      sex) async {
     firestore.collection('AMB').doc('$car' + '$name').set({
       'CAR': car,
       'LOCATION': location,
@@ -286,7 +286,8 @@ class _Patient_InfoState extends State<Patient_Info>
       'TAG2': tag2,
       'TAG3': tag3,
       'RESERVED': false,
-      'RESERVED_HOSPITAL_CODE': 0
+      'RESERVED_HOSPITAL_CODE': 0,
+      'sex': sex
     });
   }
 
@@ -362,9 +363,9 @@ class _Patient_InfoState extends State<Patient_Info>
                           gen = value;
                         });
                         if (gen) {
-                          sex = "남자";
+                          sex = "남성";
                         } else {
-                          sex = "여자";
+                          sex = "여성";
                         }
                       }),
                 ],
@@ -625,7 +626,8 @@ class _Patient_InfoState extends State<Patient_Info>
                       tags1,
                       tags2,
                       tags3,
-                      patientAge.text);
+                      patientAge.text,
+                      sex);
 
                   _showPopDB(context, "등록이 완료되었습니다.", carCode, location);
                 } catch (e) {
