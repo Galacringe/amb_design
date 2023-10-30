@@ -13,8 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:emergenshare_amb/widgets/custom_switch.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 class Patient_Info extends StatefulWidget {
   const Patient_Info({super.key});
@@ -343,33 +342,31 @@ class _Patient_InfoState extends State<Patient_Info>
             children: [
               Row(
                 children: [
-                  Text("환자 정보를 입력해주세요!",
+                  Text("환자 정보를 입력해주세요!    ",
                       style:
                           TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
-                  Text('    성별 :',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
-                  SizedBox(
-                    width: 50,
-                    child: CustomSwitch(
-                        toggleWidth: 20,
-                        toggleHeight: 20,
-                        trackWidth: 50,
-                        trackHeight: 22,
-                        trackActiveColor: Colors.blue,
-                        trackInActiveColor: Colors.red,
-                        value: gen,
-                        onChanged: (value) {
-                          setState(() {
-                            gen = value;
-                          });
-                          if (gen) {
-                            sex = "남자";
-                          } else {
-                            sex = "여자";
-                          }
-                        }),
-                  )
+                  LiteRollingSwitch(
+                      width: 90,
+                      value: gen,
+                      textOn: '남성',
+                      textOff: '여성',
+                      colorOn: Colors.blue,
+                      colorOff: Colors.red,
+                      iconOn: Icons.male,
+                      iconOff: Icons.female,
+                      onDoubleTap: () {},
+                      onTap: () {},
+                      onSwipe: () {},
+                      onChanged: (value) {
+                        setState(() {
+                          gen = value;
+                        });
+                        if (gen) {
+                          sex = "남자";
+                        } else {
+                          sex = "여자";
+                        }
+                      }),
                 ],
               ),
               SizedBox(

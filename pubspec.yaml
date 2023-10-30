@@ -41,6 +41,7 @@ dependencies:
   fluttertoast: 8.2.2
   url_launcher: 6.1.14
   restart_app: 1.2.1
+  lite_rolling_switch: ^1.0.1
 
 dev_dependencies:
   flutter_test:
