@@ -73,7 +73,7 @@ class _Patient_InfoState extends State<Patient_Info>
   }
 
   bool gen = false;
-  String sex = "";
+  String sex = "여성";
 
   //환자 정보 글
   TextEditingController patientInfo = TextEditingController();
