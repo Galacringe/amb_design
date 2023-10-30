@@ -164,8 +164,25 @@ class _Hospital_InfomationState extends State<Hospital_Infomation>
                       child: Image.network(snapshot.data?["IMAGE"]),
                     ),
                     Text(snapshot.data?["INFO"]),
-                    Text("여기에 AI 값 1"),
-                    Text("여기에 AI 값 2"),
+                    Text(
+                      "현재 탐지된 인원 수 - " + snapshot.data?["PEOPLE_RES"],
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      "병상 수 " +
+                          snapshot.data?["BED_RES"] +
+                          "개 중 " +
+                          snapshot.data?["USEABLE_BED_RES"] +
+                          "개 가량 남은 것으로 추정됨",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      "혼잡도 현재 안내 : " + snapshot.data?["CROWD_VALUE"],
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    ),
                     ListTile(
                         leading: Icon(Icons.apartment_rounded,
                             size: 70, color: Colors.black),
