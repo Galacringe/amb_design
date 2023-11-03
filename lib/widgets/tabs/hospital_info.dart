@@ -165,7 +165,7 @@ class _Hospital_InfomationState extends State<Hospital_Infomation>
                     ),
                     Text(snapshot.data?["INFO"]),
                     Text(
-                      "현재 탐지된 인원 수 - " + snapshot.data?["PEOPLE_RES"],
+                      "현재 탐지된 인원 수 : " + snapshot.data?["PEOPLE_RES"],
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
@@ -220,15 +220,16 @@ class _Hospital_InfomationState extends State<Hospital_Infomation>
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.w600)),
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(13),
                       margin: EdgeInsets.all(10),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Colors.grey,
+                        color: Color.fromARGB(235, 235, 235, 235),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(snapshot.data?["BROADCAST"],
-                          style: TextStyle(fontSize: 15)),
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500)),
                     ),
                   ],
                 ),
